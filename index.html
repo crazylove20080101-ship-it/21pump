@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>21PUMP 舞藝基地 — 課程體驗預約</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --yellow: #F9C900;
+      --yellow-light: #FFE14D;
+      --yellow-dark: #D4A800;
+      --black: #111111;
+      --black-soft: #222222;
+      --gray: #555555;
+      --gray-light: #999999;
+      --bg: #FFFFFF;
+      --card-bg: #F7F7F7;
+      --border: #E0E0E0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: var(--bg);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ── HERO HEADER ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* Photo background */
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* Gradient overlay — darkens bottom-left for readability */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top,  rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.30) 55%, transparent 100%),
+        linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* Bottom-left content block */
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 40px 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      max-width: 560px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--black);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      padding: 5px 16px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero-logo-text {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(56px, 11vw, 100px);
+      color: var(--yellow);
+      letter-spacing: 4px;
+      line-height: 1;
+    }
+
+    .hero-sub {
+      font-size: clamp(13px, 2.5vw, 17px);
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 5px;
+      font-weight: 400;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--yellow);
+      color: var(--black);
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      cursor: pointer;
+      border: none;
+      margin-top: 4px;
+    }
+
+    .hero-cta:hover {
+      background: var(--yellow-light);
+      transform: translateY(-2px);
+    }
+
+    .hero-cta .price-pill {
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 14px;
+      padding: 3px 10px;
+      border-radius: 30px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .hero { min-height: 420px; }
+      .hero-content { padding: 28px 24px; }
+    }
+
+    /* ── INFO BAR ── */
+    .info-bar {
+      background: var(--yellow);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .info-bar-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 28px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--black);
+      border-right: 1px solid rgba(0,0,0,0.12);
+    }
+    .info-item:last-child { border-right: none; }
+    .info-item i { font-size: 18px; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .main { grid-template-columns: 1fr; gap: 32px; padding: 36px 16px 60px; }
+    }
+
+    /* ── LEFT: INTRO ── */
+    .intro-section {}
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--gray-light);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .intro-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(36px, 6vw, 52px);
+      color: var(--black);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .intro-title span { color: var(--yellow-dark); }
+
+    .intro-desc {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--gray);
+      margin-bottom: 32px;
+      border-left: 3px solid var(--yellow);
+      padding-left: 16px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+
+    .tag {
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      letter-spacing: 1px;
+      border-radius: 2px;
+    }
+
+    /* Course types grid */
+    .course-grid {
+      margin-top: 8px;
+    }
+
+    .course-grid-title {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--black);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .course-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1.5px solid var(--border);
+      color: var(--gray);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── RIGHT: FORM ── */
+    .form-section {
+      background: var(--black);
+      border-radius: 8px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-section::before {
+      content: "";
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: var(--yellow);
+      border-radius: 50%;
+      opacity: 0.07;
+    }
+
+    .form-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 28px;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--yellow);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .form-label span {
+      color: rgba(255,255,255,0.3);
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    select, input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 13px 16px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 14px;
+      font-family: "Noto Sans TC", sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F9C900' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 3px rgba(249,201,0,0.15);
+    }
+
+    select option { background: #1a1a1a; }
+
+    /* Time slot select — initially hidden */
+    #time-group {
+      transition: opacity 0.3s;
+    }
+
+    .form-hint {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--yellow);
+      color: var(--black);
+      border: none;
+      border-radius: 4px;
+      font-size: 18px;
+      font-family: "Bebas Neue", sans-serif;
+      font-weight: 400;
+      letter-spacing: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit:hover {
+      background: var(--yellow-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(249,201,0,0.3);
+    }
+
+    .btn-submit:active { transform: translateY(0); }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── SUCCESS STATE ── */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+      color: var(--black);
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .success-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 28px;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .success-msg {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+    }
+
+    .success-msg strong {
+      color: var(--yellow);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1px;
+    }
+
+    footer strong { color: var(--yellow); }
+
+    /* ── Divider line in form ── */
+    .form-divider {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 24px 0 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <!-- 🔁 將 src 換成你的實際照片 URL -->
+    <img
+      class="hero-photo"
+      src="https://images.unsplash.com/photo-1547153760-18fc86324498?w=1600&q=80"
+      alt="21PUMP 舞藝基地"
+    >
+    <div class="hero-content">
+      <div class="hero-badge">體驗課程報名</div>
+      <div class="hero-logo-text">21PUMP</div>
+      <div class="hero-sub">旗艦 2 館 · 台中北屯</div>
+      <a class="hero-cta" href="https://script.google.com/macros/s/AKfycbxHlXNXDcEWCgErktxk2p4ZRv5LgQGoO6yRE3HjoRSexOVmALNxBgQht9tg2JAe_kpyXw/exec#regForm" onclick="document.getElementById('regForm').scrollIntoView({behavior:'smooth'});return false;">
+        立刻預約體驗
+        <span class="price-pill">$100</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── INFO BAR ── -->
+  <div class="info-bar">
+    <div class="info-bar-inner">
+      <div class="info-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>台中市北屯區東光路665號1F（太原車站正下方）</span>
+      </div>
+      <div class="info-item">
+        <i class="fa-solid fa-phone"></i>
+        <span>0977-038835</span>
+      </div>
+      <div class="info-item">
+        <i class="fa-brands fa-line"></i>
+        <span>@977kqexo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- LEFT: Intro -->
+    <div class="intro-section">
+      <p class="section-label">About Us</p>
+      <h2 class="intro-title">開啟你的<br><span>舞蹈旅程</span></h2>
+      <p class="intro-desc">
+        21PUMP 舞藝基地旗艦2館，擁有頂尖師資與完善設備。
+        不論你是零基礎新生或進階舞者，都能在這裡找到最適合的課程，
+        以體驗課$100的超值價格，踏出第一步！
+      </p>
+
+      <div class="tag-list">
+        <div class="tag">專業師資</div>
+        <div class="tag">各年齡層適用</div>
+        <div class="tag">多樣舞種</div>
+        <div class="tag">彈性時段</div>
+      </div>
+
+      <div class="course-grid">
+        <div class="course-grid-title">開設舞種</div>
+        <div class="course-chips">
+          <div class="chip">Hip-Hop</div>
+          <div class="chip">Popping</div>
+          <div class="chip">Locking</div>
+          <div class="chip">Jazz Funk</div>
+          <div class="chip">Breaking</div>
+          <div class="chip">Dancehall</div>
+          <div class="chip">Twerk</div>
+          <div class="chip">流行MV</div>
+          <div class="chip">Jazz</div>
+          <div class="chip">兒童街舞入門</div>
+          <div class="chip">兒童地板入門</div>
+          <div class="chip">兒童Hip-Hop</div>
+          <div class="chip">幼兒街舞律動</div>
+          <div class="chip">繪本寶貝律動</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="form-section">
+      <div class="form-title">立刻預約</div>
+      <div class="form-subtitle">REGISTER NOW · 體驗課 $100</div>
+
+      <form id="regForm">
+        <!-- 舞蹈種類 -->
+        <div class="form-group">
+          <label class="form-label" for="dance-type">舞蹈種類 <span>Dance Type</span></label>
+          <select id="dance-type" name="danceType" required onchange="updateTimeSlots()">
+            <option value="" disabled selected>請選擇舞蹈種類</option>
+            <optgroup label="成人班">
+              <option value="Hip-Hop初階">Hip-Hop 初階</option>
+              <option value="Hip-Hop中階">Hip-Hop 中階</option>
+              <option value="Hip-Hop舞力養成">Hip-Hop 舞力養成</option>
+              <option value="Popping初階">Popping 初階</option>
+              <option value="Locking入門">Locking 入門</option>
+              <option value="Locking初階">Locking 初階</option>
+              <option value="Jazz Funk">Jazz Funk</option>
+              <option value="Breaking初階">Breaking 初階</option>
+              <option value="Dancehall入門">Dancehall 入門</option>
+              <option value="Dancehall">Dancehall</option>
+              <option value="Twerk">Twerk</option>
+              <option value="流行MV成人班">流行MV 成人班</option>
+              <option value="流行MV辣專班">流行MV 辣專班（週三）</option>
+              <option value="流行MV辣專班週日">流行MV 辣專班（週日）</option>
+              <option value="流行MV精華班">流行MV 精華班</option>
+              <option value="流行MV活力班">流行MV 活力班</option>
+              <option value="Jazz初階">Jazz 初階</option>
+              <option value="Jazz中階">Jazz 中階</option>
+              <option value="舞感養成">舞感養成</option>
+            </optgroup>
+            <optgroup label="兒童 / 幼兒班">
+              <option value="兒童街舞入門週二">兒童街舞入門（週二）</option>
+              <option value="兒童街舞入門週四">兒童街舞入門（週四）</option>
+              <option value="兒童街舞入門週五">兒童街舞入門（週五）</option>
+              <option value="兒童街舞入門週六A">兒童街舞入門（週六 A棟）</option>
+              <option value="兒童街舞入門週六B">兒童街舞入門（週六 B棟）</option>
+              <option value="兒童地板入門">兒童地板入門</option>
+              <option value="兒童Hip-Hop週六">兒童 Hip-Hop（週六）</option>
+              <option value="兒童Hip-Hop週日">兒童 Hip-Hop（週日）</option>
+              <option value="兒童Hip-Hop週二">兒童 Hip-Hop（週二）</option>
+              <option value="幼兒街舞律動">幼兒街舞律動</option>
+              <option value="繪本寶貝律動">繪本寶貝律動</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- 對應時間 -->
+        <div class="form-group" id="time-group">
+          <label class="form-label" for="time-slot">上課時間 <span>Class Time</span></label>
+          <select id="time-slot" name="timeSlot" required>
+            <option value="" disabled selected>請先選擇舞蹈種類</option>
+          </select>
+          <p class="form-hint">依課表顯示可預約時段</p>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 孩子姓名（動態顯示） -->
+        <div class="form-group" id="child-name-group" style="display:none;">
+          <label class="form-label" for="child-name">孩子姓名 <span>Child's Name</span></label>
+          <input type="text" id="child-name" name="childName" placeholder="請輸入孩子的姓名">
+        </div>
+
+        <!-- 家長姓名 -->
+        <div class="form-group">
+          <label class="form-label" for="parent-name">
+            <span id="name-label-text">姓名</span>
+            <span> Name</span>
+          </label>
+          <input type="text" id="parent-name" name="parentName" placeholder="請輸入姓名" required>
+        </div>
+
+        <!-- 電話 -->
+        <div class="form-group">
+          <label class="form-label" for="phone">聯絡電話 <span>Phone</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="0912-345-678" required>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          立刻預約體驗 BOOK NOW
+        </button>
+      </form>
+
+      <!-- Success -->
+      <div class="success-state" id="successState">
+        <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+        <div class="success-title">預約成功！</div>
+        <div class="success-msg">
+          感謝你的報名，<br>
+          <strong>我們將會用最快速度與您聯繫！</strong><br><br>
+          如有疑問請加 LINE：<strong>@977kqexo</strong><br>
+          或致電：<strong>0977-038835</strong>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <strong>21PUMP 舞藝基地 · 旗艦2館</strong><br>
+    台中市北屯區東光路665號1F（太原車站正下方）
+  </footer>
+
+  <script>
+    // ── Time slot data ──
+    const timeSlots = {
+      "Hip-Hop初階":       ["週六 13:00–13:50 (壹伍老師)"],
+      "Hip-Hop中階":       ["週六 17:10–18:00 (壹伍老師)"],
+      "Hip-Hop舞力養成":   ["週日 18:00–19:30 (恩恩老師)"],
+      "Popping初階":       ["週二 19:10–20:00 (才才老師)"],
+      "Locking入門":       ["週二 19:10–20:00 (小劍老師)"],
+      "Locking初階":       ["週二 20:10–21:00 (小劍老師)"],
+      "Jazz Funk":         ["週三 19:10–20:00 (勛姬老師)"],
+      "Breaking初階":      ["週四 20:30–21:20 (蝦子老師)"],
+      "Dancehall入門":     ["週二 20:10–21:00 (雲兒老師)"],
+      "Dancehall":         ["週三 20:10–21:00 (雲兒老師)"],
+      "Twerk":             ["週五 20:30–21:20 (魚魚老師)"],
+      "流行MV成人班":      ["週五 19:10–20:00 (勛姬老師)"],
+      "流行MV辣專班":      ["週三 20:10–21:00 (勛姬老師)"],
+      "流行MV辣專班週日":  ["週日 11:00–11:50 (勛姬老師)"],
+      "流行MV精華班":      ["週日 14:30–15:20 (魚魚老師 · 404 new era)"],
+      "流行MV活力班":      ["週日 10:00–10:50 (EMMA老師 · XG-HYPNOTIZE)"],
+      "Jazz初階":          ["週六 11:00–11:50 (YuNa老師)"],
+      "Jazz中階":          ["週日 20:10–21:00 (YuNa老師)"],
+      "舞感養成":          ["週四 19:10–20:00 (恩恩老師)"],
+      "兒童街舞入門週二":  ["週二 19:10–20:00 (EMMA老師)"],
+      "兒童街舞入門週四":  ["週四 19:10–20:00 (壹伍老師)"],
+      "兒童街舞入門週五":  ["週五 19:10–20:00 (壹伍老師)"],
+      "兒童街舞入門週六A": ["週六 11:00–11:50 (魚魚老師)"],
+      "兒童街舞入門週六B": ["週六 10:00–10:50 (壹伍老師)"],
+      "兒童地板入門":      ["週六 11:00–11:50 (蝦子老師)"],
+      "兒童Hip-Hop週六":   ["週六 13:00–13:50 (EMMA老師)"],
+      "兒童Hip-Hop週日":   ["週日 13:00–13:50 (EMMA老師)"],
+      "兒童Hip-Hop週二":   ["週二 18:00–18:50 (小劍老師)"],
+      "幼兒街舞律動":      ["週六 12:00–12:50 (笑笑老師)"],
+      "繪本寶貝律動":      ["週六 10:00–10:50 (笑笑老師)"],
+    };
+
+    const childClasses = new Set([
+      "兒童街舞入門週二","兒童街舞入門週四","兒童街舞入門週五",
+      "兒童街舞入門週六A","兒童街舞入門週六B","兒童地板入門",
+      "兒童Hip-Hop週六","兒童Hip-Hop週日","兒童Hip-Hop週二",
+      "幼兒街舞律動","繪本寶貝律動"
+    ]);
+
+    function updateTimeSlots() {
+      const type = document.getElementById("dance-type").value;
+      const timeSelect = document.getElementById("time-slot");
+      const slots = timeSlots[type] || [];
+      const isChild = childClasses.has(type);
+
+      // Update time options
+      timeSelect.innerHTML = "";
+      if (slots.length === 0) {
+        const opt = document.createElement("option");
+        opt.value = ""; opt.disabled = true; opt.selected = true;
+        opt.textContent = "請先選擇舞蹈種類";
+        timeSelect.appendChild(opt);
+      } else {
+        slots.forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s; opt.textContent = s;
+          timeSelect.appendChild(opt);
+        });
+      }
+
+      // Show/hide child name field & update parent label
+      const childGroup = document.getElementById("child-name-group");
+      const nameLabelText = document.getElementById("name-label-text");
+      if (isChild) {
+        childGroup.style.display = "block";
+        document.getElementById("child-name").required = true;
+        nameLabelText.textContent = "家長姓名";
+        document.getElementById("parent-name").placeholder = "請輸入家長姓名";
+      } else {
+        childGroup.style.display = "none";
+        document.getElementById("child-name").required = false;
+        nameLabelText.textContent = "姓名";
+        document.getElementById("parent-name").placeholder = "請輸入姓名";
+      }
+    }
+
+    // ── GAS 部署網址 ──
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxHlXNXDcEWCgErktxk2p4ZRv5LgQGoO6yRE3HjoRSexOVmALNxBgQht9tg2JAe_kpyXw/exec";
+
+    // ── Form submit — google.script.run ──
+    document.getElementById("regForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById("submitBtn");
+      btn.textContent = "送出中...";
+      btn.disabled = true;
+
+      // 把所有欄位值包成一個純物件傳給 GAS
+      const formData = {
+        danceType:  document.getElementById("dance-type").value,
+        timeSlot:   document.getElementById("time-slot").value,
+        childName:  document.getElementById("child-name").value  || "",
+        parentName: document.getElementById("parent-name").value || "",
+        phone:      document.getElementById("phone").value       || ""
+      };
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          // GAS 回傳成功 → 隱藏表單、顯示成功畫面
+          document.getElementById("regForm").style.display = "none";
+          document.getElementById("successState").style.display = "block";
+        })
+        .withFailureHandler(function(err) {
+          // GAS 回傳例外 → 恢復按鈕並提示
+          btn.textContent = "立刻預約體驗 BOOK NOW";
+          btn.disabled = false;
+          alert("送出失敗，請稍後再試。\n" + err.message);
+        })
+        .processForm(formData);
+    });
+  </script>
+</body>
+</html>
