@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script charset="utf-8" src="https://static.line-sdn.net/liff/edge/2/sdk.js"></script>
   <style>
     :root {
       --yellow: #F9C900;
@@ -428,6 +429,32 @@
       border-top: 1px solid #2a2a2a;
       margin: 24px 0 20px;
     }
+
+    /* ── LIFF 歡迎列 ── */
+    .liff-welcome {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .liff-welcome img {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .liff-welcome .liff-name {
+      color: var(--yellow);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .liff-welcome .liff-hint {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+    }
   </style>
 </head>
 <body>
@@ -511,6 +538,15 @@
     <div class="form-section">
       <div class="form-title">立刻預約</div>
       <div class="form-subtitle">REGISTER NOW · 體驗課 $100</div>
+
+      <!-- LIFF 歡迎列（從 LINE 開啟時顯示） -->
+      <div class="liff-welcome" id="liffWelcome">
+        <img id="liffAvatar" src="" alt="">
+        <div>
+          <div class="liff-name" id="liffName"></div>
+          <div class="liff-hint">已透過 LINE 登入</div>
+        </div>
+      </div>
 
       <form id="regForm" novalidate>
         <!-- 舞蹈種類 -->
@@ -614,7 +650,32 @@
   </footer>
 
   <script>
-    // ── Time slot data ──
+    // ══════════════════════════════════════════════════
+    // LIFF 初始化 — 取得顧客的 LINE User ID
+    // ══════════════════════════════════════════════════
+    let lineUserId = "";
+
+    liff.init({ liffId: "2010397360-MyxDSRYD" })
+      .then(() => {
+        if (liff.isLoggedIn()) {
+          liff.getProfile().then(profile => {
+            lineUserId = profile.userId;
+
+            // 顯示歡迎列
+            var welcome = document.getElementById("liffWelcome");
+            document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
+            if (profile.pictureUrl) {
+              document.getElementById("liffAvatar").src = profile.pictureUrl;
+            }
+            welcome.style.display = "flex";
+          });
+        }
+      })
+      .catch(err => console.log("LIFF init:", err));
+
+    // ══════════════════════════════════════════════════
+    // 課程時段資料
+    // ══════════════════════════════════════════════════
     const timeSlots = {
       "Hip-Hop初階":       ["週六 13:00–13:50 (壹伍老師)"],
       "Hip-Hop中階":       ["週六 17:10–18:00 (壹伍老師)"],
@@ -690,16 +751,14 @@
       }
     }
 
-    // ────────────────────────────────────────────────
-    // ★ 核心修正：改用 fetch 呼叫 GAS，不再使用
-    //   google.script.run（那只能在 GAS 內嵌頁面用）
-    // ────────────────────────────────────────────────
+    // ══════════════════════════════════════════════════
+    // 表單送出
+    // ══════════════════════════════════════════════════
     const GAS_URL = "https://script.google.com/macros/s/AKfycbz_JTHx6usgej4Mu9YbNKBKncgYxn3kL0fQ1RJew2vGslIZ7uS2BBGFfDiE1FeJuF_q/exec";
 
     document.getElementById("regForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      // 簡單前端驗證
       const danceType  = document.getElementById("dance-type").value;
       const timeSlot   = document.getElementById("time-slot").value;
       const parentName = document.getElementById("parent-name").value.trim();
@@ -715,21 +774,31 @@
       btn.textContent = "送出中...";
       btn.disabled = true;
 
-      const payload = { danceType, timeSlot, childName, parentName, phone };
+      const payload = {
+        danceType,
+        timeSlot,
+        childName,
+        parentName,
+        phone,
+        lineUserId    // ← LIFF 取得的 LINE User ID
+      };
 
       try {
-        // GAS Web App 不支援 CORS 的 JSON POST，
-        // 用 no-cors 送出後直接視為成功（GAS 仍會寫入資料）
         await fetch(GAS_URL, {
           method:  "POST",
-          mode:    "no-cors",          // ← 重要：繞過 CORS 限制
+          mode:    "no-cors",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify(payload)
         });
 
-        // no-cors 模式下拿不到回應內容，但只要不丟例外就視為送出成功
         document.getElementById("regForm").style.display = "none";
+        document.getElementById("liffWelcome").style.display = "none";
         document.getElementById("successState").style.display = "block";
+
+        // 如果在 LIFF 裡，3 秒後自動關閉視窗回到 LINE 聊天室
+        if (liff.isInClient()) {
+          setTimeout(() => liff.closeWindow(), 3000);
+        }
 
       } catch (err) {
         btn.textContent = "立刻預約體驗 BOOK NOW";
