@@ -655,23 +655,27 @@
     // ══════════════════════════════════════════════════
     let lineUserId = "";
 
-    liff.init({ liffId: "2010397360-MyxDSRYD" })
-      .then(() => {
-        if (liff.isLoggedIn()) {
-          liff.getProfile().then(profile => {
-            lineUserId = profile.userId;
+    try {
+      liff.init({ liffId: "2010397360-MyxDSRYD" })
+        .then(() => {
+          if (liff.isLoggedIn()) {
+            liff.getProfile().then(profile => {
+              lineUserId = profile.userId;
 
-            // 顯示歡迎列
-            var welcome = document.getElementById("liffWelcome");
-            document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
-            if (profile.pictureUrl) {
-              document.getElementById("liffAvatar").src = profile.pictureUrl;
-            }
-            welcome.style.display = "flex";
-          });
-        }
-      })
-      .catch(err => console.log("LIFF init:", err));
+              // 顯示歡迎列
+              var welcome = document.getElementById("liffWelcome");
+              document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
+              if (profile.pictureUrl) {
+                document.getElementById("liffAvatar").src = profile.pictureUrl;
+              }
+              welcome.style.display = "flex";
+            });
+          }
+        })
+        .catch(err => console.log("LIFF init:", err));
+    } catch(e) {
+      console.log("LIFF SDK not loaded:", e);
+    }
 
     // ══════════════════════════════════════════════════
     // 課程時段資料
@@ -796,9 +800,11 @@
         document.getElementById("successState").style.display = "block";
 
         // 如果在 LIFF 裡，3 秒後自動關閉視窗回到 LINE 聊天室
-        if (liff.isInClient()) {
-          setTimeout(() => liff.closeWindow(), 3000);
-        }
+        try {
+          if (liff.isInClient()) {
+            setTimeout(() => liff.closeWindow(), 3000);
+          }
+        } catch(e) {}
 
       } catch (err) {
         btn.textContent = "立刻預約體驗 BOOK NOW";
