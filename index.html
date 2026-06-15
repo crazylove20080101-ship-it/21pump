@@ -658,23 +658,29 @@
     try {
       liff.init({ liffId: "2010397360-MyxDSRYD" })
         .then(() => {
+          var d = "LIFF OK\n";
+          d += "isLoggedIn: " + liff.isLoggedIn() + "\n";
+          d += "isInClient: " + liff.isInClient() + "\n";
+          d += "OS: " + liff.getOS();
+          alert(d);
+
           if (liff.isLoggedIn()) {
             liff.getProfile().then(profile => {
               lineUserId = profile.userId;
+              alert("Profile OK\nuserId: " + profile.userId + "\nname: " + profile.displayName);
 
-              // 顯示歡迎列
               var welcome = document.getElementById("liffWelcome");
               document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
               if (profile.pictureUrl) {
                 document.getElementById("liffAvatar").src = profile.pictureUrl;
               }
               welcome.style.display = "flex";
-            });
+            }).catch(err => alert("getProfile 失敗：" + err));
           }
         })
-        .catch(err => console.log("LIFF init:", err));
+        .catch(err => alert("LIFF init 失敗：" + err));
     } catch(e) {
-      console.log("LIFF SDK not loaded:", e);
+      alert("LIFF SDK 載入失敗：" + e);
     }
 
     // ══════════════════════════════════════════════════
