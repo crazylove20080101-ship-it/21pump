@@ -671,6 +671,12 @@
       try {
         await liff.init({ liffId: LIFF_ID });
 
+        const isLineBrowser = /Line\//i.test(navigator.userAgent);
+        const shouldUseLineLogin = liff.isInClient() || isLineBrowser;
+        if (!shouldUseLineLogin) {
+          return;
+        }
+
         if (!liff.isLoggedIn()) {
           liff.login({ redirectUri: window.location.href });
           return;
