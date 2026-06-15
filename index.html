@@ -660,33 +660,37 @@
     // ══════════════════════════════════════════════════
     let lineUserId = "";
 
-    try {
-      liff.init({ liffId: "2010397360-MyxDSRYD" })
-        .then(() => {
-          var d = "LIFF OK\n";
-          d += "isLoggedIn: " + liff.isLoggedIn() + "\n";
-          d += "isInClient: " + liff.isInClient() + "\n";
-          d += "OS: " + liff.getOS();
-          alert(d);
+    const LIFF_ID = "2010397360-MyxDSRYD";
 
-          if (liff.isLoggedIn()) {
-            liff.getProfile().then(profile => {
-              lineUserId = profile.userId;
-              alert("Profile OK\nuserId: " + profile.userId + "\nname: " + profile.displayName);
+    async function initLiff() {
+      if (typeof liff === "undefined") {
+        console.warn("LIFF SDK 載入失敗");
+        return;
+      }
 
-              var welcome = document.getElementById("liffWelcome");
-              document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
-              if (profile.pictureUrl) {
-                document.getElementById("liffAvatar").src = profile.pictureUrl;
-              }
-              welcome.style.display = "flex";
-            }).catch(err => alert("getProfile 失敗：" + err));
-          }
-        })
-        .catch(err => alert("LIFF init 失敗：" + err));
-    } catch(e) {
-      alert("LIFF SDK 載入失敗：" + e);
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        if (!liff.isLoggedIn()) {
+          liff.login({ redirectUri: window.location.href });
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        lineUserId = profile.userId;
+
+        const welcome = document.getElementById("liffWelcome");
+        document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
+        if (profile.pictureUrl) {
+          document.getElementById("liffAvatar").src = profile.pictureUrl;
+        }
+        welcome.style.display = "flex";
+      } catch (err) {
+        console.warn("LIFF 初始化失敗", err);
+      }
     }
+
+    initLiff();
 
     // ══════════════════════════════════════════════════
     // 課程時段資料
@@ -812,7 +816,7 @@
 
         // 如果在 LIFF 裡，3 秒後自動關閉視窗回到 LINE 聊天室
         try {
-          if (liff.isInClient()) {
+          if (typeof liff !== "undefined" && liff.isInClient()) {
             setTimeout(() => liff.closeWindow(), 3000);
           }
         } catch(e) {}
