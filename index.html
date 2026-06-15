@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script charset="utf-8" src="https://static.line-sdn.net/liff/edge/2/sdk.js"></script>
   <style>
     :root {
       --yellow: #F9C900;
@@ -649,6 +648,12 @@
     台中市北屯區東光路665號1F（太原車站正下方）
   </footer>
 
+  <script charset="utf-8" src="https://static.line-sdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    if (typeof liff === "undefined") {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/@line/liff@2/dist/lib/index.js"><\/script>');
+    }
+  </script>
   <script>
     // ══════════════════════════════════════════════════
     // LIFF 初始化 — 取得顧客的 LINE User ID
