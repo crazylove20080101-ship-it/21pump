@@ -1,18 +1,1322 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0D0F14">
-<title>21PUMP 戰情</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>21PUMP 舞藝基地 — 課程體驗預約</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --yellow: #F9C900;
+      --yellow-light: #FFE14D;
+      --yellow-dark: #D4A800;
+      --black: #111111;
+      --black-soft: #222222;
+      --gray: #555555;
+      --gray-light: #999999;
+      --bg: #FFFFFF;
+      --card-bg: #F7F7F7;
+      --border: #E0E0E0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: var(--bg);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ── HERO HEADER ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top,  rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.30) 55%, transparent 100%),
+        linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 40px 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      max-width: 560px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--black);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      padding: 5px 16px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero-logo-text {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(56px, 11vw, 100px);
+      color: var(--yellow);
+      letter-spacing: 4px;
+      line-height: 1;
+    }
+
+    .hero-sub {
+      font-size: clamp(13px, 2.5vw, 17px);
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 5px;
+      font-weight: 400;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--yellow);
+      color: var(--black);
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      cursor: pointer;
+      border: none;
+      margin-top: 4px;
+    }
+
+    .hero-cta:hover {
+      background: var(--yellow-light);
+      transform: translateY(-2px);
+    }
+
+    .hero-cta .price-pill {
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 14px;
+      padding: 3px 10px;
+      border-radius: 30px;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .hero { min-height: 420px; }
+      .hero-content { padding: 28px 24px; }
+    }
+
+    /* ── INFO BAR ── */
+    .info-bar {
+      background: var(--yellow);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .info-bar-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 28px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--black);
+      border-right: 1px solid rgba(0,0,0,0.12);
+    }
+    .info-item:last-child { border-right: none; }
+    .info-item i { font-size: 18px; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .main { grid-template-columns: 1fr; gap: 32px; padding: 36px 16px 60px; }
+    }
+
+    /* ── LEFT: INTRO ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--gray-light);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .intro-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(36px, 6vw, 52px);
+      color: var(--black);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .intro-title span { color: var(--yellow-dark); }
+
+    .intro-desc {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--gray);
+      margin-bottom: 32px;
+      border-left: 3px solid var(--yellow);
+      padding-left: 16px;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 36px;
+    }
+
+    .tag {
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      letter-spacing: 1px;
+      border-radius: 2px;
+    }
+
+    .course-grid-title {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--black);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .course-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1.5px solid var(--border);
+      color: var(--gray);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── RIGHT: FORM ── */
+    .form-section {
+      background: var(--black);
+      border-radius: 8px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-section::before {
+      content: "";
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: var(--yellow);
+      border-radius: 50%;
+      opacity: 0.07;
+    }
+
+    .form-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 28px;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--yellow);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .form-label span {
+      color: rgba(255,255,255,0.3);
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    select, input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 13px 16px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 14px;
+      font-family: "Noto Sans TC", sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F9C900' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    select:focus, input:focus {
+      border-color: var(--yellow);
+      box-shadow: 0 0 0 3px rgba(249,201,0,0.15);
+    }
+
+    select option { background: #1a1a1a; }
+
+    .form-hint {
+      font-size: 11px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 18px;
+      background: var(--yellow);
+      color: var(--black);
+      border: none;
+      border-radius: 4px;
+      font-size: 18px;
+      font-family: "Bebas Neue", sans-serif;
+      font-weight: 400;
+      letter-spacing: 4px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: var(--yellow-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(249,201,0,0.3);
+    }
+
+    .btn-submit:active { transform: translateY(0); }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── SUCCESS STATE ── */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .success-title {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 28px;
+      color: var(--yellow);
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    .success-msg {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+    }
+
+    .success-msg strong { color: var(--yellow); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 1px;
+    }
+
+    footer strong { color: var(--yellow); }
+
+    .form-divider {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 24px 0 20px;
+    }
+
+    /* ── LIFF 歡迎列 ── */
+    .liff-welcome {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .liff-welcome img {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .liff-welcome .liff-name {
+      color: var(--yellow);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .liff-welcome .liff-hint {
+      color: rgba(255,255,255,0.4);
+      font-size: 11px;
+    }
+
+    /* ── 表單上方優惠提示 ── */
+    .form-perk {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(249,201,0,0.12);
+      border: 1px dashed rgba(249,201,0,0.5);
+      color: var(--yellow);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 4px;
+      margin: -14px 0 26px;
+    }
+
+    .form-section.is-highlight {
+      animation: highlight 1.2s ease-out;
+    }
+
+    @keyframes highlight {
+      0%   { box-shadow: 0 0 0 0 rgba(249,201,0,0.7); }
+      100% { box-shadow: 0 0 0 18px rgba(249,201,0,0); }
+    }
+
+    /* 防機器人隱藏欄位 */
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    /* ── 抵用券（彈窗與成功畫面共用）── */
+    .ticket {
+      position: relative;
+      background: var(--yellow);
+      color: var(--black);
+      border-radius: 8px;
+    }
+
+    .ticket-top {
+      padding: 22px 24px 18px;
+      text-align: center;
+    }
+
+    .ticket-brand {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 3px;
+    }
+
+    .ticket-amount {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 76px;
+      line-height: 1;
+      letter-spacing: 2px;
+      margin: 6px 0 2px;
+    }
+
+    .ticket-label {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .ticket-label small {
+      display: block;
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      opacity: 0.6;
+    }
+
+    /* 撕線 + 兩側半圓缺口（缺口顏色 = 外框底色） */
+    .ticket-perforation {
+      position: relative;
+      height: 0;
+      border-top: 2px dashed rgba(0,0,0,0.3);
+      margin: 0 18px;
+    }
+
+    .ticket-perforation::before,
+    .ticket-perforation::after {
+      content: "";
+      position: absolute;
+      top: -12px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--black);
+    }
+    .ticket-perforation::before { left: -30px; }
+    .ticket-perforation::after  { right: -30px; }
+
+    .ticket-bottom {
+      padding: 16px 24px 20px;
+    }
+
+    /* ── 進站彈窗 ── */
+    .promo-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .promo-overlay[hidden] { display: none; }
+    .promo-overlay.is-open { opacity: 1; }
+
+    .promo-card {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      background: var(--black);
+      border-radius: 12px;
+      padding: 40px 26px 26px;
+      text-align: center;
+      transform: scale(0.9) translateY(12px);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    }
+
+    .promo-overlay.is-open .promo-card { transform: none; }
+
+    .promo-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .promo-close:hover {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    .promo-kicker {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 16px;
+      letter-spacing: 4px;
+      color: var(--yellow);
+    }
+
+    .promo-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      margin: 4px 0 20px;
+    }
+
+    .promo-steps {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .promo-steps span:not(.arrow) {
+      background: var(--black);
+      color: var(--yellow);
+      padding: 4px 7px;
+      border-radius: 3px;
+    }
+
+    .promo-steps .arrow { opacity: 0.5; }
+
+    .promo-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.7);
+      margin: 20px 0 22px;
+    }
+
+    .promo-desc strong { color: var(--yellow); }
+
+    .promo-cta {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 4px;
+      background: var(--yellow);
+      color: var(--black);
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .promo-cta:hover {
+      background: var(--yellow-light);
+      transform: translateY(-2px);
+    }
+
+    /* ── 成功畫面的抵用券 ── */
+    .voucher-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--black);
+      background: #fff;
+      padding: 6px 14px;
+      border-radius: 30px;
+      margin-bottom: 18px;
+    }
+
+    .success-state .ticket {
+      text-align: left;
+      margin-bottom: 22px;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .voucher-code {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: 34px;
+      letter-spacing: 5px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .voucher-code small {
+      display: block;
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      opacity: 0.55;
+    }
+
+    .voucher-info {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 14px;
+      font-size: 13px;
+    }
+
+    .voucher-info dt {
+      font-weight: 900;
+      opacity: 0.55;
+    }
+
+    .voucher-info dd { font-weight: 700; }
+
+    .btn-line {
+      display: none;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 4px;
+      background: #06C755;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<div id="app"><p class="boot">載入中…</p></div>
-<div id="toast" role="status" aria-live="polite" hidden></div>
-<script type="module" src="app.js"></script>
+
+  <!-- ── 進站彈窗 ── -->
+  <div class="promo-overlay" id="promo" hidden>
+    <div class="promo-card" role="dialog" aria-modal="true" aria-labelledby="promoTitle">
+      <button type="button" class="promo-close" id="promoClose" aria-label="關閉">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="promo-kicker">Congratulations</div>
+      <div class="promo-title" id="promoTitle">🎉 恭喜你獲得</div>
+      <div class="ticket">
+        <div class="ticket-top">
+          <div class="ticket-brand">21PUMP 舞藝基地</div>
+          <div class="ticket-amount">$100</div>
+          <div class="ticket-label">體驗抵用券<small>Free Trial Voucher</small></div>
+        </div>
+        <div class="ticket-perforation"></div>
+        <div class="ticket-bottom">
+          <div class="promo-steps">
+            <span>填寫資料</span><span class="arrow">→</span>
+            <span>截圖畫面</span><span class="arrow">→</span>
+            <span>到館出示</span>
+          </div>
+        </div>
+      </div>
+      <p class="promo-desc">完成預約即可 <strong>免費體驗一堂課</strong></p>
+      <button type="button" class="promo-cta" id="promoCta">立即填寫領取</button>
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <header class="hero">
+    <img
+      class="hero-photo"
+      src="image/21_all.jpg"
+      alt="21PUMP 舞藝基地"
+    >
+    <div class="hero-content">
+      <div class="hero-sub">旗艦 2 館 · 台中北屯</div>
+      <a class="hero-cta" href="#regForm" onclick="document.getElementById('regForm').scrollIntoView({behavior:'smooth'});return false;">
+        立刻預約體驗
+        <span class="price-pill">$100</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── INFO BAR ── -->
+  <div class="info-bar">
+    <div class="info-bar-inner">
+      <div class="info-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>太原館｜東光路665號1F（太原車站正下方）</span>
+      </div>
+      <div class="info-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>飛躍館｜太和二街116號2樓</span>
+      </div>
+      <div class="info-item">
+        <i class="fa-solid fa-phone"></i>
+        <span>0977-038835</span>
+      </div>
+      <div class="info-item">
+        <i class="fa-brands fa-line"></i>
+        <span>@977kqexo</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- LEFT: Intro -->
+    <div class="intro-section">
+      <p class="section-label">About Us</p>
+      <h2 class="intro-title">開啟你的<br><span>舞蹈旅程</span></h2>
+      <p class="intro-desc">
+        21PUMP 舞藝基地旗艦館，擁有頂尖師資與完善設備。
+        不論你是零基礎新生或進階舞者，都能在這裡找到最適合的課程，
+        以體驗課$100的超值價格，踏出第一步！
+      </p>
+
+      <div class="tag-list">
+        <div class="tag">專業師資</div>
+        <div class="tag">各年齡層適用</div>
+        <div class="tag">多樣舞種</div>
+        <div class="tag">彈性時段</div>
+      </div>
+
+      <div class="course-grid">
+        <div class="course-grid-title">開設舞種</div>
+        <div class="course-chips">
+          <div class="chip">Hip-Hop</div>
+          <div class="chip">Popping</div>
+          <div class="chip">Locking</div>
+          <div class="chip">Jazz Funk</div>
+          <div class="chip">Breaking</div>
+          <div class="chip">Dancehall</div>
+          <div class="chip">Twerk</div>
+          <div class="chip">流行MV</div>
+          <div class="chip">Jazz</div>
+          <div class="chip">舞感養成</div>
+          <div class="chip">兒童街舞入門</div>
+          <div class="chip">兒童地板入門</div>
+          <div class="chip">兒童Hip-Hop</div>
+          <div class="chip">兒童K-POP</div>
+          <div class="chip">幼兒啟蒙律動</div>
+          <div class="chip">幼兒街舞律動</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="form-section" id="formSection" tabindex="-1">
+      <div class="form-title">立刻預約</div>
+      <div class="form-subtitle">REGISTER NOW · 體驗課 $100</div>
+      <div class="form-perk"><i class="fa-solid fa-ticket"></i> 填完即送 $100 體驗抵用券</div>
+
+      <!-- LIFF 歡迎列（從 LINE 開啟時顯示） -->
+      <div class="liff-welcome" id="liffWelcome">
+        <img id="liffAvatar" src="" alt="">
+        <div>
+          <div class="liff-name" id="liffName"></div>
+          <div class="liff-hint">已透過 LINE 登入</div>
+        </div>
+      </div>
+
+      <form id="regForm" novalidate>
+        <!-- 館別 -->
+        <div class="form-group">
+          <label class="form-label" for="branch">選擇館別 <span>Studio</span></label>
+          <select id="branch" name="branch" required>
+            <option value="" disabled selected>請選擇館別</option>
+          </select>
+          <p class="form-hint" id="branch-addr"></p>
+        </div>
+
+        <!-- 課程（依館別、課表產生） -->
+        <div class="form-group">
+          <label class="form-label" for="dance-type">體驗課程 <span>Class</span></label>
+          <select id="dance-type" name="classId" required disabled>
+            <option value="" disabled selected>請先選擇館別</option>
+          </select>
+        </div>
+
+        <!-- 日期（只列出該課程的上課日） -->
+        <div class="form-group">
+          <label class="form-label" for="class-date">體驗日期 <span>Date</span></label>
+          <select id="class-date" name="classDate" required disabled>
+            <option value="" disabled selected>請先選擇課程</option>
+          </select>
+          <p class="form-hint">只顯示該課程未來 4 週的上課日</p>
+        </div>
+
+        <hr class="form-divider">
+
+        <!-- 孩子姓名（動態顯示） -->
+        <div class="form-group" id="child-name-group" style="display:none;">
+          <label class="form-label" for="child-name">孩子姓名 <span>Child's Name</span></label>
+          <input type="text" id="child-name" name="childName" placeholder="請輸入孩子的姓名">
+        </div>
+
+        <!-- 您的姓名 -->
+        <div class="form-group">
+          <label class="form-label" for="parent-name">
+            <span id="name-label-text">姓名</span>
+            <span> Name</span>
+          </label>
+          <input type="text" id="parent-name" name="parentName" placeholder="請輸入姓名" required>
+        </div>
+
+        <!-- 電話 -->
+        <div class="form-group">
+          <label class="form-label" for="phone">聯絡電話 <span>Phone</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="0912-345-678" inputmode="tel" required>
+        </div>
+
+        <!-- 防機器人：真人看不到這格，有填值就是機器人 -->
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          立刻預約體驗 BOOK NOW
+        </button>
+      </form>
+
+      <!-- Success -->
+      <div class="success-state" id="successState">
+        <div class="success-title" id="successTitle">預約成功！</div>
+
+        <div id="voucherBlock" hidden>
+          <div class="voucher-hint"><i class="fa-solid fa-camera"></i> 請截圖保存此畫面</div>
+          <div class="ticket">
+            <div class="ticket-top">
+              <div class="ticket-brand">21PUMP 舞藝基地</div>
+              <div class="ticket-amount">$100</div>
+              <div class="ticket-label">體驗抵用券<small>Free Trial Voucher</small></div>
+            </div>
+            <div class="ticket-perforation"></div>
+            <div class="ticket-bottom">
+              <div class="voucher-code"><small>券號</small><span id="vCode"></span></div>
+              <dl class="voucher-info">
+                <dt>姓名</dt><dd id="vName"></dd>
+                <dt>館別</dt><dd id="vBranch"></dd>
+                <dt>課程</dt><dd id="vDance"></dd>
+                <dt>時間</dt><dd id="vTime"></dd>
+                <dt>有效期限</dt><dd id="vExpiry"></dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <div class="success-msg">
+          到館出示抵用券即可<strong>免費體驗一堂課</strong><br>
+          我們將會用最快速度與您聯繫！<br><br>
+          如有疑問請加 LINE：<strong>@977kqexo</strong><br>
+          或致電：<strong>0977-038835</strong>
+        </div>
+
+        <button type="button" class="btn-line" id="backToLine">
+          <i class="fa-brands fa-line"></i> 回到 LINE 聊天室
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <strong>21PUMP 舞藝基地 · 旗艦2館</strong><br>
+    太原館｜台中市北屯區東光路665號1F（太原車站正下方）<br>
+    飛躍館｜台中市北屯區廍子里太和二街116號2樓
+  </footer>
+
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    if (typeof liff === "undefined") {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/@line/liff@2/dist/lib/index.js"><\/script>');
+    }
+  </script>
+  <script>
+    // ══════════════════════════════════════════════════
+    // LIFF 初始化 — 從 LINE 開啟時登入，送出時附上 ID Token
+    // ══════════════════════════════════════════════════
+    let liffLoggedIn = false;
+
+    const LIFF_ID = "2012408770-C79uv8GI";
+
+    async function initLiff() {
+      if (typeof liff === "undefined") {
+        console.warn("LIFF SDK 載入失敗");
+        return;
+      }
+
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        const isLineBrowser = /Line\//i.test(navigator.userAgent);
+        const shouldUseLineLogin = liff.isInClient() || isLineBrowser;
+        if (!shouldUseLineLogin) {
+          return;
+        }
+
+        if (!liff.isLoggedIn()) {
+          liff.login({ redirectUri: window.location.href });
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        liffLoggedIn = true;
+
+        const welcome = document.getElementById("liffWelcome");
+        document.getElementById("liffName").textContent = profile.displayName + "，歡迎！";
+        if (profile.pictureUrl) {
+          document.getElementById("liffAvatar").src = profile.pictureUrl;
+        }
+        welcome.style.display = "flex";
+      } catch (err) {
+        console.warn("LIFF 初始化失敗", err);
+      }
+    }
+
+    initLiff();
+
+    // ══════════════════════════════════════════════════
+    // 課表（2026 年 11 月）— 每月換課表時只要改這一段
+    // ══════════════════════════════════════════════════
+    const BRANCHES = {
+      taiyuan: { name: "太原館", address: "台中市北屯區東光路665號1F（太原車站正下方）" },
+      feiyue:  { name: "飛躍館", address: "台中市北屯區廍子里太和二街116號2樓" },
+    };
+
+    // [館別, 星期(0=日…6=六), 開始, 結束, 課程, 老師, 教室, 備註]
+    // 課程名稱有「兒童」或「幼兒」的，表單會要求填孩子姓名
+    const SCHEDULE = [
+      // 太原館
+      ["taiyuan", 2, "18:00", "18:50", "兒童Hip-Hop",   "小劍", "B"],
+      ["taiyuan", 2, "19:10", "20:00", "兒童街舞入門",  "EMMA", "A"],
+      ["taiyuan", 2, "19:10", "20:00", "Locking入門",   "小劍", "B"],
+      ["taiyuan", 2, "20:10", "21:00", "Dancehall入門", "雪兒", "A"],
+      ["taiyuan", 2, "20:10", "21:00", "Locking初階",   "小劍", "B"],
+      ["taiyuan", 3, "19:10", "20:00", "Popping初階",   "才才", "A"],
+      ["taiyuan", 3, "19:10", "20:00", "Jazz Funk",     "勛姬", "B"],
+      ["taiyuan", 3, "20:10", "21:00", "Dancehall",     "雪兒", "A"],
+      ["taiyuan", 3, "20:10", "21:00", "流行MV辣專班",  "勛姬", "B", "TUIDE - SUN KISS"],
+      ["taiyuan", 4, "19:10", "20:00", "舞感養成",      "恩恩", "B"],
+      ["taiyuan", 4, "20:30", "21:20", "Breaking初階",  "蝦子", "B"],
+      ["taiyuan", 5, "19:10", "20:00", "流行MV成人班",  "勛姬", "A"],
+      ["taiyuan", 5, "19:10", "20:00", "兒童街舞入門",  "壹伍", "B"],
+      ["taiyuan", 5, "20:10", "21:00", "Jazz中階",      "YuNa", "B"],
+      ["taiyuan", 5, "20:30", "21:20", "Twerk",         "魚魚", "A"],
+      ["taiyuan", 6, "10:00", "10:50", "幼兒啟蒙律動",  "笑笑", "A"],
+      ["taiyuan", 6, "10:00", "10:50", "兒童街舞入門",  "壹伍", "B"],
+      ["taiyuan", 6, "11:00", "11:50", "兒童街舞入門",  "魚魚", "A"],
+      ["taiyuan", 6, "11:00", "11:50", "兒童地板入門",  "蝦子", "B"],
+      ["taiyuan", 6, "12:00", "12:50", "幼兒街舞律動",  "笑笑", "B"],
+      ["taiyuan", 6, "13:00", "13:50", "Hip-Hop初階",   "壹伍", "A"],
+      ["taiyuan", 6, "13:00", "13:50", "兒童Hip-Hop",   "EMMA", "B"],
+      ["taiyuan", 6, "17:10", "18:00", "Hip-Hop中階",   "壹伍", "A"],
+      ["taiyuan", 0, "10:00", "10:50", "流行MV活力班",  "EMMA", "B", "NAYEON - MEEEEEE"],
+      ["taiyuan", 0, "11:00", "11:50", "Jazz初階",      "YuNa", "A"],
+      ["taiyuan", 0, "11:00", "11:50", "流行MV辣專班",  "勛姬", "B", "KiiiKiii"],
+      ["taiyuan", 0, "14:30", "15:20", "流行MV精華班",  "魚魚", "B", "ILLIT - You're Under Arrest"],
+      // 飛躍館
+      ["feiyue", 2, "19:10", "20:00", "兒童K-POP",     "魚魚"],
+      ["feiyue", 3, "19:10", "20:00", "兒童街舞入門",  "EMMA"],
+      ["feiyue", 4, "19:10", "20:00", "兒童Hip-Hop",   "EMMA"],
+      ["feiyue", 5, "19:10", "20:00", "兒童K-POP",     "EMMA"],
+      ["feiyue", 6, "11:00", "11:50", "兒童K-POP",     "明翰"],
+      ["feiyue", 6, "13:00", "13:50", "兒童街舞入門",  "恩恩"],
+      ["feiyue", 6, "14:00", "14:50", "兒童Hip-Hop",   "恩恩"],
+      ["feiyue", 0, "13:10", "14:00", "兒童街舞入門",  "小劍"],
+      ["feiyue", 0, "14:00", "14:50", "兒童Hip-Hop",   "小劍"],
+    ].map(([branch, day, start, end, name, teacher, room, note], i) => ({
+      id: "c" + i, branch, day, start, end, name, teacher, room: room || "", note: note || "",
+      isChild: /兒童|幼兒/.test(name),
+    }));
+
+    // 停課日（國定假日、活動等），格式 "2026-12-25"
+    const CLOSED_DATES = [];
+    const BOOK_WEEKS = 4;          // 可預約未來幾週
+    const SAME_DAY_CUTOFF_MIN = 120;   // 當天課程開始前多少分鐘截止
+
+    const WEEKDAY = "日一二三四五六";
+    const DAY_ORDER = [2, 3, 4, 5, 6, 0];   // 週一公休，從週二排到週日
+
+    function slotText(c) {
+      return `週${WEEKDAY[c.day]} ${c.start}–${c.end}（${c.teacher}老師${c.room ? "・" + c.room + "教室" : ""}）`;
+    }
+
+    // 台北時間的今天與現在幾分鐘
+    function taipeiNow() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+      }).formatToParts(new Date()).reduce((o, p) => (o[p.type] = p.value, o), {});
+      return { date: `${parts.year}-${parts.month}-${parts.day}`, minutes: +parts.hour * 60 + +parts.minute };
+    }
+    function addDaysStr(s, n) {
+      const d = new Date(s + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n);
+      return d.toISOString().slice(0, 10);
+    }
+    const toMin = t => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+
+    function upcomingDates(c) {
+      const now = taipeiNow(), out = [];
+      for (let i = 0; i < BOOK_WEEKS * 7; i++) {
+        const d = addDaysStr(now.date, i);
+        if (new Date(d + "T00:00:00Z").getUTCDay() !== c.day) continue;
+        if (CLOSED_DATES.includes(d)) continue;
+        if (i === 0 && toMin(c.start) - now.minutes < SAME_DAY_CUTOFF_MIN) continue;
+        out.push(d);
+      }
+      return out;
+    }
+    const dateLabel = (d, c) => `${+d.slice(5, 7)}/${+d.slice(8, 10)}（${WEEKDAY[c.day]}）${c.start}–${c.end}`;
+
+    function option(value, text, opts = {}) {
+      const o = document.createElement("option");
+      o.value = value; o.textContent = text;
+      if (opts.disabled) o.disabled = true;
+      if (opts.selected) o.selected = true;
+      return o;
+    }
+
+    const branchSel = document.getElementById("branch");
+    const classSel  = document.getElementById("dance-type");
+    const dateSel   = document.getElementById("class-date");
+
+    Object.entries(BRANCHES).forEach(([key, b]) => branchSel.appendChild(option(key, b.name)));
+
+    branchSel.addEventListener("change", () => {
+      const b = BRANCHES[branchSel.value];
+      document.getElementById("branch-addr").textContent = b ? "📍 " + b.address : "";
+      const list = SCHEDULE.filter(c => c.branch === branchSel.value)
+        .sort((a, z) => DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(z.day) || a.start.localeCompare(z.start));
+      classSel.innerHTML = "";
+      classSel.appendChild(option("", "請選擇課程", { disabled: true, selected: true }));
+      [["成人班", false], ["兒童 / 幼兒班", true]].forEach(([label, child]) => {
+        const items = list.filter(c => c.isChild === child);
+        if (!items.length) return;
+        const g = document.createElement("optgroup"); g.label = label;
+        items.forEach(c => g.appendChild(option(c.id, `${c.name}｜週${WEEKDAY[c.day]} ${c.start}・${c.teacher}`)));
+        classSel.appendChild(g);
+      });
+      classSel.disabled = false;
+      resetDates("請先選擇課程");
+      updateNameFields(false);
+    });
+
+    function resetDates(text) {
+      dateSel.innerHTML = "";
+      dateSel.appendChild(option("", text, { disabled: true, selected: true }));
+      dateSel.disabled = true;
+    }
+
+    classSel.addEventListener("change", () => {
+      const c = SCHEDULE.find(x => x.id === classSel.value);
+      if (!c) return;
+      const dates = upcomingDates(c);
+      if (!dates.length) { resetDates("近期沒有可預約的日期"); return; }
+      dateSel.innerHTML = "";
+      dateSel.appendChild(option("", "請選擇日期", { disabled: true, selected: true }));
+      dates.forEach(d => dateSel.appendChild(option(d, dateLabel(d, c))));
+      dateSel.disabled = false;
+      updateNameFields(c.isChild);
+    });
+
+    function updateNameFields(isChild) {
+      const childGroup = document.getElementById("child-name-group");
+      const nameLabelText = document.getElementById("name-label-text");
+      if (isChild) {
+        childGroup.style.display = "block";
+        document.getElementById("child-name").required = true;
+        nameLabelText.textContent = "家長姓名";
+        document.getElementById("parent-name").placeholder = "請輸入家長姓名";
+      } else {
+        childGroup.style.display = "none";
+        document.getElementById("child-name").required = false;
+        nameLabelText.textContent = "姓名";
+        document.getElementById("parent-name").placeholder = "請輸入姓名";
+      }
+    }
+
+    // ══════════════════════════════════════════════════
+    // 表單送出
+    // ══════════════════════════════════════════════════
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbz_JTHx6usgej4Mu9YbNKBKncgYxn3kL0fQ1RJew2vGslIZ7uS2BBGFfDiE1FeJuF_q/exec";
+
+    document.getElementById("regForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const cls        = SCHEDULE.find(c => c.id === classSel.value);
+      const classDate  = dateSel.value;
+      const parentName = document.getElementById("parent-name").value.trim();
+      const phone      = document.getElementById("phone").value.trim();
+      const childName  = document.getElementById("child-name").value.trim();
+
+      const isChild = document.getElementById("child-name").required;
+
+      if (!cls || !classDate || !parentName || !phone || (isChild && !childName)) {
+        alert("請填寫所有必填欄位");
+        return;
+      }
+
+      if (!/^0\d{8,9}$/.test(phone.replace(/\D/g, ""))) {
+        alert("電話格式不正確，請重新確認（例如 0912-345-678）");
+        return;
+      }
+
+      const btn = document.getElementById("submitBtn");
+      btn.textContent = "送出中...";
+      btn.disabled = true;
+
+      let idToken = "";
+      try {
+        if (liffLoggedIn) idToken = liff.getIDToken() || "";
+      } catch (err) {}
+
+      const payload = {
+        branch:    BRANCHES[cls.branch].name,
+        danceType: cls.name,
+        timeSlot:  slotText(cls),
+        classDate,
+        childName,
+        parentName,
+        phone,
+        idToken,      // ← 後台向 LINE 驗證後才取得 User ID
+        website: document.getElementById("website").value
+      };
+
+      // 不加 Content-Type（預設 text/plain），瀏覽器才不會擋，也才讀得到 GAS 的回應
+      let result;
+      try {
+        const res = await fetch(GAS_URL, { method: "POST", body: JSON.stringify(payload) });
+        result = await res.json();
+      } catch (err) {
+        result = { status: "error", message: "網路連線不穩，請稍後再試，或直接聯繫我們。" };
+      }
+
+      if (result.status !== "ok") {
+        btn.textContent = "立刻預約體驗 BOOK NOW";
+        btn.disabled = false;
+        alert(result.message || "送出失敗，請稍後再試，或直接聯繫我們。");
+        return;
+      }
+
+      showSuccess(result);
+    });
+
+    function showSuccess(result) {
+      document.getElementById("regForm").style.display = "none";
+      document.getElementById("liffWelcome").style.display = "none";
+      document.querySelector(".form-perk").style.display = "none";
+
+      const v = result.voucher;
+      if (v) {
+        document.getElementById("successTitle").textContent =
+          result.duplicate ? "你已經領過囉！" : "預約成功！";
+        document.getElementById("vCode").textContent   = v.code;
+        document.getElementById("vName").textContent   = v.name;
+        document.getElementById("vBranch").textContent = v.branch || "—";
+        document.getElementById("vDance").textContent  = v.danceType;
+        document.getElementById("vTime").textContent   = v.classDateText || v.timeSlot;
+        document.getElementById("vExpiry").textContent = v.expiry;
+        document.getElementById("voucherBlock").hidden = false;
+        store.set(VOUCHER_KEY, v.code);
+      }
+
+      const success = document.getElementById("successState");
+      success.style.display = "block";
+      success.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      // 在 LINE 裡開啟時，留給顧客截圖，改由按鈕回聊天室
+      try {
+        if (typeof liff !== "undefined" && liff.isInClient()) {
+          const backBtn = document.getElementById("backToLine");
+          backBtn.style.display = "block";
+          backBtn.onclick = () => liff.closeWindow();
+        }
+      } catch (err) {}
+    }
+
+    // ══════════════════════════════════════════════════
+    // 進站彈窗 — $100 體驗抵用券
+    // ══════════════════════════════════════════════════
+    const VOUCHER_KEY = "21pump_voucher";
+    const SNOOZE_KEY  = "21pump_promo_snooze_until";
+    const SNOOZE_DAYS = 3;   // 按 ✕ 關掉後幾天內不再跳出
+
+    // 無痕模式等情況 localStorage 可能無法使用，失敗就當沒存
+    const store = {
+      get(key) { try { return localStorage.getItem(key); } catch (e) { return null; } },
+      set(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
+    };
+
+    const promo = document.getElementById("promo");
+
+    function openPromo() {
+      promo.hidden = false;
+      document.body.style.overflow = "hidden";
+      void promo.offsetWidth;   // 先讓 hidden 移除生效，淡入動畫才會跑
+      promo.classList.add("is-open");
+      document.getElementById("promoCta").focus();
+    }
+
+    function closePromo(snooze) {
+      promo.classList.remove("is-open");
+      promo.hidden = true;
+      document.body.style.overflow = "";
+      if (snooze) {
+        store.set(SNOOZE_KEY, String(Date.now() + SNOOZE_DAYS * 86400000));
+      }
+    }
+
+    document.getElementById("promoClose").addEventListener("click", () => closePromo(true));
+    promo.addEventListener("click", (e) => { if (e.target === promo) closePromo(true); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !promo.hidden) closePromo(true);
+    });
+
+    document.getElementById("promoCta").addEventListener("click", () => {
+      closePromo(false);
+      const formSection = document.getElementById("formSection");
+      formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      formSection.focus({ preventScroll: true });
+      formSection.classList.remove("is-highlight");
+      void formSection.offsetWidth;   // 重新觸發動畫
+      formSection.classList.add("is-highlight");
+    });
+
+    const alreadyClaimed = !!store.get(VOUCHER_KEY);
+    const snoozed = Date.now() < Number(store.get(SNOOZE_KEY) || 0);
+    if (!alreadyClaimed && !snoozed) {
+      setTimeout(openPromo, 1000);
+    }
+  </script>
 </body>
 </html>
