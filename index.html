@@ -705,6 +705,105 @@
 
     .voucher-info dd { font-weight: 700; }
 
+    /* 條件小字 */
+    .fine-print {
+      font-size: 11px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.45);
+      margin-top: 14px;
+    }
+
+    .ticket-fine {
+      font-size: 10.5px;
+      font-weight: 700;
+      opacity: 0.6;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* 方便的時段（可複選） */
+    .pref-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .pref { position: relative; cursor: pointer; }
+
+    .pref input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      cursor: pointer;
+    }
+
+    .pref span {
+      display: block;
+      text-align: center;
+      padding: 12px 8px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: rgba(255,255,255,0.75);
+      font-size: 14px;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+
+    .pref input:checked + span {
+      border-color: var(--yellow);
+      background: rgba(249,201,0,0.12);
+      color: var(--yellow);
+      font-weight: 700;
+    }
+
+    .pref input:focus-visible + span {
+      box-shadow: 0 0 0 3px rgba(249,201,0,0.35);
+    }
+
+    /* 存到相簿 */
+    .btn-save {
+      width: 100%;
+      margin: -8px 0 22px;
+      padding: 13px;
+      border: 1px solid var(--yellow);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--yellow);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-save:hover { background: rgba(249,201,0,0.1); }
+
+    .save-card {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      background: var(--black);
+      border-radius: 12px;
+      padding: 48px 20px 20px;
+      text-align: center;
+    }
+
+    .save-card img {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .save-tip {
+      color: var(--yellow);
+      font-size: 14px;
+      font-weight: 700;
+      margin: 14px 0 12px;
+    }
+
+    .save-dl {
+      display: block;
+      text-decoration: none;
+    }
+
     .btn-line {
       display: none;
       width: 100%;
@@ -733,20 +832,21 @@
       <div class="ticket">
         <div class="ticket-top">
           <div class="ticket-brand">21PUMP 舞藝基地</div>
-          <div class="ticket-amount">$100</div>
-          <div class="ticket-label">體驗抵用券<small>Free Trial Voucher</small></div>
+          <div class="ticket-amount">FREE</div>
+          <div class="ticket-label">免費體驗課 1 堂<small>Free Trial Class</small></div>
         </div>
         <div class="ticket-perforation"></div>
         <div class="ticket-bottom">
           <div class="promo-steps">
             <span>填寫資料</span><span class="arrow">→</span>
-            <span>截圖畫面</span><span class="arrow">→</span>
-            <span>到館出示</span>
+            <span>截圖保存</span><span class="arrow">→</span>
+            <span>專人聯繫</span>
           </div>
         </div>
       </div>
-      <p class="promo-desc">完成預約即可 <strong>免費體驗一堂課</strong></p>
+      <p class="promo-desc">填寫資料領取，<strong>專人將盡快與您聯繫</strong>，為您安排體驗課程</p>
       <button type="button" class="promo-cta" id="promoCta">立即填寫領取</button>
+      <p class="fine-print">※ 限新生使用一次・限指定體驗課程・上課時段由專人安排・領取後 30 天內有效</p>
     </div>
   </div>
 
@@ -835,7 +935,7 @@
     <div class="form-section" id="formSection" tabindex="-1">
       <div class="form-title">立刻預約</div>
       <div class="form-subtitle">REGISTER NOW · 體驗課 $100</div>
-      <div class="form-perk"><i class="fa-solid fa-ticket"></i> 填完即送 $100 體驗抵用券</div>
+      <div class="form-perk"><i class="fa-solid fa-ticket"></i> 填完即送免費體驗課 1 堂</div>
 
       <!-- LIFF 歡迎列（從 LINE 開啟時顯示） -->
       <div class="liff-welcome" id="liffWelcome">
@@ -856,21 +956,24 @@
           <p class="form-hint" id="branch-addr"></p>
         </div>
 
-        <!-- 課程（依館別、課表產生） -->
+        <!-- 想學的課程（意向，依館別課表產生） -->
         <div class="form-group">
-          <label class="form-label" for="dance-type">體驗課程 <span>Class</span></label>
-          <select id="dance-type" name="classId" required disabled>
+          <label class="form-label" for="dance-type">想學的課程 <span>Interest</span></label>
+          <select id="dance-type" name="interest" required disabled>
             <option value="" disabled selected>請先選擇館別</option>
           </select>
         </div>
 
-        <!-- 日期（只列出該課程的上課日） -->
+        <!-- 方便的時段（可複選） -->
         <div class="form-group">
-          <label class="form-label" for="class-date">體驗日期 <span>Date</span></label>
-          <select id="class-date" name="classDate" required disabled>
-            <option value="" disabled selected>請先選擇課程</option>
-          </select>
-          <p class="form-hint">只顯示該課程未來 4 週的上課日</p>
+          <span class="form-label" id="pref-label">方便的時段 <span>可複選</span></span>
+          <div class="pref-grid" role="group" aria-labelledby="pref-label">
+            <label class="pref"><input type="checkbox" name="pref" value="平日晚上"><span>平日晚上</span></label>
+            <label class="pref"><input type="checkbox" name="pref" value="週六上午"><span>週六上午</span></label>
+            <label class="pref"><input type="checkbox" name="pref" value="週六下午"><span>週六下午</span></label>
+            <label class="pref"><input type="checkbox" name="pref" value="週日"><span>週日</span></label>
+          </div>
+          <p class="form-hint">專人會依你的時段，安排適合的體驗課程（週一公休）</p>
         </div>
 
         <hr class="form-divider">
@@ -909,15 +1012,15 @@
 
       <!-- Success -->
       <div class="success-state" id="successState">
-        <div class="success-title" id="successTitle">預約成功！</div>
+        <div class="success-title" id="successTitle">登記成功！</div>
 
         <div id="voucherBlock" hidden>
           <div class="voucher-hint"><i class="fa-solid fa-camera"></i> 請截圖保存此畫面</div>
           <div class="ticket">
             <div class="ticket-top">
               <div class="ticket-brand">21PUMP 舞藝基地</div>
-              <div class="ticket-amount">$100</div>
-              <div class="ticket-label">體驗抵用券<small>Free Trial Voucher</small></div>
+              <div class="ticket-amount">FREE</div>
+              <div class="ticket-label">免費體驗課 1 堂<small>Free Trial Class</small></div>
             </div>
             <div class="ticket-perforation"></div>
             <div class="ticket-bottom">
@@ -925,17 +1028,18 @@
               <dl class="voucher-info">
                 <dt>姓名</dt><dd id="vName"></dd>
                 <dt>館別</dt><dd id="vBranch"></dd>
-                <dt>課程</dt><dd id="vDance"></dd>
-                <dt>時間</dt><dd id="vTime"></dd>
+                <dt>想學</dt><dd id="vDance"></dd>
+                <dt>偏好時段</dt><dd id="vTime"></dd>
                 <dt>有效期限</dt><dd id="vExpiry"></dd>
               </dl>
+              <p class="ticket-fine">限新生使用一次・限指定體驗課程・上課時段由專人安排</p>
             </div>
           </div>
+          <button type="button" class="btn-save" id="saveVoucher"><i class="fa-solid fa-download"></i> 存到相簿</button>
         </div>
 
         <div class="success-msg">
-          到館出示抵用券即可<strong>免費體驗一堂課</strong><br>
-          我們將會用最快速度與您聯繫！<br><br>
+          <strong>專人將盡快與您聯繫</strong>，為您安排體驗課程<br><br>
           如有疑問請加 LINE：<strong>@977kqexo</strong><br>
           或致電：<strong>0977-038835</strong>
         </div>
@@ -947,6 +1051,16 @@
     </div>
 
   </main>
+
+  <!-- ── 存到相簿：顯示產生好的抵用券圖片 ── -->
+  <div class="promo-overlay" id="saveSheet" hidden>
+    <div class="save-card" role="dialog" aria-modal="true" aria-label="儲存抵用券">
+      <button type="button" class="promo-close" id="saveClose" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
+      <img id="saveImg" alt="21PUMP 免費體驗課抵用券">
+      <p class="save-tip" id="saveTip">長按圖片 → 儲存到相簿</p>
+      <a class="promo-cta save-dl" id="saveDl" download="21PUMP-體驗課抵用券.png">下載圖片</a>
+    </div>
+  </div>
 
   <!-- ── FOOTER ── -->
   <footer>
@@ -1059,44 +1173,8 @@
       isChild: /兒童|幼兒/.test(name),
     }));
 
-    // 停課日（國定假日、活動等），格式 "2026-12-25"
-    const CLOSED_DATES = [];
-    const BOOK_WEEKS = 4;          // 可預約未來幾週
-    const SAME_DAY_CUTOFF_MIN = 120;   // 當天課程開始前多少分鐘截止
-
-    const WEEKDAY = "日一二三四五六";
     const DAY_ORDER = [2, 3, 4, 5, 6, 0];   // 週一公休，從週二排到週日
-
-    function slotText(c) {
-      return `週${WEEKDAY[c.day]} ${c.start}–${c.end}（${c.teacher}老師${c.room ? "・" + c.room + "教室" : ""}）`;
-    }
-
-    // 台北時間的今天與現在幾分鐘
-    function taipeiNow() {
-      const parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "2-digit", minute: "2-digit", hourCycle: "h23"
-      }).formatToParts(new Date()).reduce((o, p) => (o[p.type] = p.value, o), {});
-      return { date: `${parts.year}-${parts.month}-${parts.day}`, minutes: +parts.hour * 60 + +parts.minute };
-    }
-    function addDaysStr(s, n) {
-      const d = new Date(s + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n);
-      return d.toISOString().slice(0, 10);
-    }
-    const toMin = t => +t.slice(0, 2) * 60 + +t.slice(3, 5);
-
-    function upcomingDates(c) {
-      const now = taipeiNow(), out = [];
-      for (let i = 0; i < BOOK_WEEKS * 7; i++) {
-        const d = addDaysStr(now.date, i);
-        if (new Date(d + "T00:00:00Z").getUTCDay() !== c.day) continue;
-        if (CLOSED_DATES.includes(d)) continue;
-        if (i === 0 && toMin(c.start) - now.minutes < SAME_DAY_CUTOFF_MIN) continue;
-        out.push(d);
-      }
-      return out;
-    }
-    const dateLabel = (d, c) => `${+d.slice(5, 7)}/${+d.slice(8, 10)}（${WEEKDAY[c.day]}）${c.start}–${c.end}`;
+    const NOT_SURE = { adult: "還不確定，請推薦我（成人）", child: "還不確定，請推薦我（兒童）" };
 
     function option(value, text, opts = {}) {
       const o = document.createElement("option");
@@ -1106,47 +1184,33 @@
       return o;
     }
 
-    const branchSel = document.getElementById("branch");
-    const classSel  = document.getElementById("dance-type");
-    const dateSel   = document.getElementById("class-date");
+    const branchSel   = document.getElementById("branch");
+    const interestSel = document.getElementById("dance-type");
 
     Object.entries(BRANCHES).forEach(([key, b]) => branchSel.appendChild(option(key, b.name)));
 
+    // 選館別 → 列出該館有開的課程名稱（同名課程只列一次），讓客人表達意向
     branchSel.addEventListener("change", () => {
       const b = BRANCHES[branchSel.value];
       document.getElementById("branch-addr").textContent = b ? "📍 " + b.address : "";
       const list = SCHEDULE.filter(c => c.branch === branchSel.value)
         .sort((a, z) => DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(z.day) || a.start.localeCompare(z.start));
-      classSel.innerHTML = "";
-      classSel.appendChild(option("", "請選擇課程", { disabled: true, selected: true }));
-      [["成人班", false], ["兒童 / 幼兒班", true]].forEach(([label, child]) => {
-        const items = list.filter(c => c.isChild === child);
-        if (!items.length) return;
+      interestSel.innerHTML = "";
+      interestSel.appendChild(option("", "請選擇想學的課程", { disabled: true, selected: true }));
+      [["成人班", false, NOT_SURE.adult], ["兒童 / 幼兒班", true, NOT_SURE.child]].forEach(([label, child, notSure]) => {
+        const names = [...new Set(list.filter(c => c.isChild === child).map(c => c.name))];
+        if (!names.length) return;
         const g = document.createElement("optgroup"); g.label = label;
-        items.forEach(c => g.appendChild(option(c.id, `${c.name}｜週${WEEKDAY[c.day]} ${c.start}・${c.teacher}`)));
-        classSel.appendChild(g);
+        names.forEach(n => g.appendChild(option(n, n)));
+        g.appendChild(option(notSure, notSure));
+        interestSel.appendChild(g);
       });
-      classSel.disabled = false;
-      resetDates("請先選擇課程");
+      interestSel.disabled = false;
       updateNameFields(false);
     });
 
-    function resetDates(text) {
-      dateSel.innerHTML = "";
-      dateSel.appendChild(option("", text, { disabled: true, selected: true }));
-      dateSel.disabled = true;
-    }
-
-    classSel.addEventListener("change", () => {
-      const c = SCHEDULE.find(x => x.id === classSel.value);
-      if (!c) return;
-      const dates = upcomingDates(c);
-      if (!dates.length) { resetDates("近期沒有可預約的日期"); return; }
-      dateSel.innerHTML = "";
-      dateSel.appendChild(option("", "請選擇日期", { disabled: true, selected: true }));
-      dates.forEach(d => dateSel.appendChild(option(d, dateLabel(d, c))));
-      dateSel.disabled = false;
-      updateNameFields(c.isChild);
+    interestSel.addEventListener("change", () => {
+      updateNameFields(/兒童|幼兒/.test(interestSel.value));
     });
 
     function updateNameFields(isChild) {
@@ -1173,16 +1237,22 @@
     document.getElementById("regForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      const cls        = SCHEDULE.find(c => c.id === classSel.value);
-      const classDate  = dateSel.value;
+      const branch     = BRANCHES[branchSel.value];
+      const interest   = interestSel.value;
+      const prefs      = [...document.querySelectorAll('input[name="pref"]:checked')].map(i => i.value);
       const parentName = document.getElementById("parent-name").value.trim();
       const phone      = document.getElementById("phone").value.trim();
       const childName  = document.getElementById("child-name").value.trim();
 
       const isChild = document.getElementById("child-name").required;
 
-      if (!cls || !classDate || !parentName || !phone || (isChild && !childName)) {
+      if (!branch || !interest || !parentName || !phone || (isChild && !childName)) {
         alert("請填寫所有必填欄位");
+        return;
+      }
+
+      if (!prefs.length) {
+        alert("請至少選一個方便的時段");
         return;
       }
 
@@ -1201,10 +1271,9 @@
       } catch (err) {}
 
       const payload = {
-        branch:    BRANCHES[cls.branch].name,
-        danceType: cls.name,
-        timeSlot:  slotText(cls),
-        classDate,
+        branch:    branch.name,
+        danceType: interest,
+        timeSlot:  prefs.join("、"),
         childName,
         parentName,
         phone,
@@ -1239,15 +1308,17 @@
       const v = result.voucher;
       if (v) {
         document.getElementById("successTitle").textContent =
-          result.duplicate ? "你已經領過囉！" : "預約成功！";
+          result.duplicate ? "你已經領過囉！" : "登記成功！";
         document.getElementById("vCode").textContent   = v.code;
         document.getElementById("vName").textContent   = v.name;
         document.getElementById("vBranch").textContent = v.branch || "—";
         document.getElementById("vDance").textContent  = v.danceType;
-        document.getElementById("vTime").textContent   = v.classDateText || v.timeSlot;
+        document.getElementById("vTime").textContent   = v.timeSlot;
         document.getElementById("vExpiry").textContent = v.expiry;
         document.getElementById("voucherBlock").hidden = false;
         store.set(VOUCHER_KEY, v.code);
+        currentVoucher = v;
+        track("voucher_view");
       }
 
       const success = document.getElementById("successState");
@@ -1265,7 +1336,109 @@
     }
 
     // ══════════════════════════════════════════════════
-    // 進站彈窗 — $100 體驗抵用券
+    // 統計 — 只記次數（抵用券顯示、存到相簿），不記是誰
+    // ══════════════════════════════════════════════════
+    let currentVoucher = null;
+
+    function track(event) {
+      try {
+        fetch(GAS_URL, { method: "POST", body: JSON.stringify({ track: event }), keepalive: true }).catch(() => {});
+      } catch (err) {}
+    }
+
+    // ══════════════════════════════════════════════════
+    // 存到相簿 — 把抵用券畫成一張圖，手機長按即可儲存
+    // ══════════════════════════════════════════════════
+    const saveSheet = document.getElementById("saveSheet");
+
+    document.getElementById("saveVoucher").addEventListener("click", async () => {
+      if (!currentVoucher) return;
+      track("voucher_save");
+      const url = await drawVoucher(currentVoucher);
+      document.getElementById("saveImg").src = url;
+      document.getElementById("saveDl").href = url;
+      // 手機上長按存圖；電腦上直接用下載按鈕
+      const isTouch = matchMedia("(pointer: coarse)").matches;
+      document.getElementById("saveTip").textContent = isTouch ? "長按圖片 → 儲存到相簿" : "按下方按鈕下載圖片";
+      document.getElementById("saveDl").style.display = isTouch ? "none" : "block";
+      saveSheet.hidden = false;
+      void saveSheet.offsetWidth;
+      saveSheet.classList.add("is-open");
+    });
+
+    function closeSaveSheet() {
+      saveSheet.classList.remove("is-open");
+      saveSheet.hidden = true;
+    }
+    document.getElementById("saveClose").addEventListener("click", closeSaveSheet);
+    saveSheet.addEventListener("click", (e) => { if (e.target === saveSheet) closeSaveSheet(); });
+
+    async function drawVoucher(v) {
+      const W = 720, H = 1040;   // 約手機畫面寬度的 2 倍，存下來才清楚
+      const canvas = document.createElement("canvas");
+      canvas.width = W; canvas.height = H;
+      const ctx = canvas.getContext("2d");
+      try { await Promise.all([document.fonts.load('140px "Bebas Neue"'), document.fonts.load('900 30px "Noto Sans TC"')]); } catch (err) {}
+
+      const sans = (weight, size) => `${weight} ${size}px "Noto Sans TC", "PingFang TC", sans-serif`;
+      const roundRect = (x, y, w, h, r) => {
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h);   // 舊版 iOS 沒有 roundRect
+      };
+
+      // 黑底
+      ctx.fillStyle = "#111111"; ctx.fillRect(0, 0, W, H);
+
+      // 黃色票券
+      const X = 40, Y = 40, TW = W - 80, TH = H - 150, PERF = 330;
+      ctx.fillStyle = "#F9C900"; roundRect(X, Y, TW, TH, 16); ctx.fill();
+      // 撕線兩側缺口
+      ctx.fillStyle = "#111111";
+      [X, X + TW].forEach(cx => { ctx.beginPath(); ctx.arc(cx, Y + PERF, 22, 0, Math.PI * 2); ctx.fill(); });
+      ctx.strokeStyle = "rgba(0,0,0,0.3)"; ctx.lineWidth = 4; ctx.setLineDash([12, 10]);
+      ctx.beginPath(); ctx.moveTo(X + 36, Y + PERF); ctx.lineTo(X + TW - 36, Y + PERF); ctx.stroke(); ctx.setLineDash([]);
+
+      ctx.fillStyle = "#111111"; ctx.textAlign = "center";
+      ctx.font = sans(900, 24); ctx.fillText("21PUMP 舞藝基地", W / 2, Y + 64);
+      ctx.font = '140px "Bebas Neue", "Arial Narrow", sans-serif'; ctx.fillText("FREE", W / 2, Y + 210);
+      ctx.font = sans(900, 34); ctx.fillText("免費體驗課 1 堂", W / 2, Y + 268);
+
+      // 券號
+      ctx.globalAlpha = 0.55; ctx.font = sans(900, 20); ctx.fillText("券號", W / 2, Y + PERF + 60); ctx.globalAlpha = 1;
+      ctx.font = '72px "Bebas Neue", "Arial Narrow", sans-serif'; ctx.fillText(v.code, W / 2, Y + PERF + 128);
+
+      // 資料列
+      const rows = [["姓名", v.name], ["館別", v.branch], ["想學", v.danceType], ["偏好時段", v.timeSlot], ["有效期限", v.expiry]]
+        .filter(r => r[1]);
+      ctx.textAlign = "left";
+      rows.forEach(([k, val], i) => {
+        const y = Y + PERF + 196 + i * 52;
+        ctx.globalAlpha = 0.55; ctx.font = sans(900, 24); ctx.fillText(k, X + 60, y); ctx.globalAlpha = 1;
+        ctx.font = sans(700, 26); ctx.fillText(fitText(ctx, String(val), TW - 260), X + 220, y);
+      });
+
+      ctx.textAlign = "center"; ctx.globalAlpha = 0.6; ctx.font = sans(700, 20);
+      ctx.fillText("限新生使用一次・限指定體驗課程・上課時段由專人安排", W / 2, Y + TH - 36);
+      ctx.globalAlpha = 1;
+
+      // 票券下方
+      ctx.fillStyle = "#F9C900"; ctx.font = sans(700, 24);
+      ctx.fillText("專人將盡快與您聯繫，安排體驗課程", W / 2, H - 70);
+      ctx.fillStyle = "rgba(255,255,255,0.55)"; ctx.font = sans(400, 20);
+      ctx.fillText("LINE @977kqexo ・ 0977-038835", W / 2, H - 34);
+
+      return canvas.toDataURL("image/png");
+    }
+
+    // 文字太長就截斷加「…」
+    function fitText(ctx, text, maxWidth) {
+      if (ctx.measureText(text).width <= maxWidth) return text;
+      while (text.length > 1 && ctx.measureText(text + "…").width > maxWidth) text = text.slice(0, -1);
+      return text + "…";
+    }
+
+    // ══════════════════════════════════════════════════
+    // 進站彈窗 — 免費體驗課
     // ══════════════════════════════════════════════════
     const VOUCHER_KEY = "21pump_voucher";
     const SNOOZE_KEY  = "21pump_promo_snooze_until";
